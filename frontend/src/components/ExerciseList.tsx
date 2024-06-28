@@ -1,26 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import MenuComponent from './menu/MenuComponent';
+import { 
+  Typography, 
+  List, 
+  ListItem, 
+  ListItemText, 
+  ListItemIcon, 
+  Container, 
+  Paper, 
+  CircularProgress 
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import ErrorIcon from '@mui/icons-material/Error';
 
 interface Exercise {
   id: number;
   name: string;
-  // 다른 필드들도 필요한 경우 추가
 }
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  marginTop: theme.spacing(3),
+}));
 
 const ExerciseList: React.FC = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        const response = await axios.get<Exercise[]>('/exercises'); // API 응답 데이터 유형을 Exercise[]로 명시
+        setLoading(true);
+        const response = await axios.get<Exercise[]>('/exercises');
         setExercises(response.data);
+        setError(null);
       } catch (error) {
         console.error('Error fetching exercises:', error);
+        setError('Failed to fetch exercises. Please try again later.');
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchExercises();
   }, []);
 
@@ -29,17 +51,37 @@ const ExerciseList: React.FC = () => {
     // 클릭된 운동 항목에 대한 추가 로직을 여기에 추가할 수 있습니다.
   };
 
-  const exerciseMenuItems = exercises.map((exercise) => ({
-    label: exercise.name,
-    onClick: () => handleExerciseClick(exercise),
-    // 아이콘 및 컨텐츠 컴포넌트는 MenuComponent에서 처리합니다.
-  }));
-
   return (
-    <div>
-      <h2>Exercise List</h2>
-      <MenuComponent menuItems={exerciseMenuItems} />
-    </div>
+    <Container maxWidth="sm">
+      <StyledPaper elevation={3}>
+        <Typography variant="h4" gutterBottom>
+          Exercise List
+        </Typography>
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <Typography color="error" align="center">
+            <ErrorIcon />
+            {error}
+          </Typography>
+        ) : (
+          <List>
+            {exercises.map((exercise) => (
+              <ListItem 
+                button 
+                key={exercise.id} 
+                onClick={() => handleExerciseClick(exercise)}
+              >
+                <ListItemIcon>
+                  <FitnessCenterIcon />
+                </ListItemIcon>
+                <ListItemText primary={exercise.name} />
+              </ListItem>
+            ))}
+          </List>
+        )}
+      </StyledPaper>
+    </Container>
   );
 };
 
