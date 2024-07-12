@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Box, Typography, Button, Paper, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import StopIcon from '@mui/icons-material/Stop'
-import RestartAltIcon from '@mui/icons-material/RestartAlt'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import StopIcon from '@mui/icons-material/Stop';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -55,9 +55,12 @@ const Stopwatch: React.FC = () => {
     const milliseconds: number = Math.floor(time % 1000);
     const seconds: number = Math.floor((time / 1000) % 60);
     const minutes: number = Math.floor((time / (1000 * 60)) % 60);
-    const formattedMilliseconds: string = milliseconds < 100 ? '0' + milliseconds : milliseconds.toString();
-    const formattedSeconds: string = seconds < 10 ? '0' + seconds : seconds.toString();
-    const formattedMinutes: string = minutes < 10 ? '0' + minutes : minutes.toString();
+    const formattedMilliseconds: string =
+      milliseconds < 100 ? '0' + milliseconds : milliseconds.toString();
+    const formattedSeconds: string =
+      seconds < 10 ? '0' + seconds : seconds.toString();
+    const formattedMinutes: string =
+      minutes < 10 ? '0' + minutes : minutes.toString();
     return `${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`;
   }, [time]);
 
@@ -67,16 +70,14 @@ const Stopwatch: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           Stopwatch
         </Typography>
-        <TimeDisplay variant="h2">
-          {formatTime}
-        </TimeDisplay>
+        <TimeDisplay variant="h2">{formatTime}</TimeDisplay>
         <ButtonGroup>
           <Button
             variant="contained"
-            color={isRunning ? "error" : "primary"}
+            color={isRunning ? 'error' : 'primary'}
             onClick={startStop}
             startIcon={isRunning ? <StopIcon /> : <PlayArrowIcon />}
-            aria-label={isRunning ? "Stop" : "Start"}
+            aria-label={isRunning ? 'Stop' : 'Start'}
           >
             {isRunning ? 'Stop' : 'Start'}
           </Button>
