@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { 
-  Typography, 
-  List, 
-  ListItem, 
-  ListItemText, 
-  ListItemIcon, 
-  Container, 
-  Paper, 
-  CircularProgress 
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Container,
+  Paper,
+  CircularProgress,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
@@ -33,7 +33,7 @@ const ExerciseList: React.FC = () => {
     const fetchExercises = async () => {
       try {
         setLoading(true);
-        const response = await axios.get<Exercise[]>('/exercises');
+        const response = await axios.get<Exercise[]>('/api/exercises');
         setExercises(response.data);
         setError(null);
       } catch (error) {
@@ -67,9 +67,9 @@ const ExerciseList: React.FC = () => {
         ) : (
           <List>
             {exercises.map((exercise) => (
-              <ListItem 
-                button 
-                key={exercise.id} 
+              <ListItem
+                button
+                key={exercise.id}
                 onClick={() => handleExerciseClick(exercise)}
               >
                 <ListItemIcon>

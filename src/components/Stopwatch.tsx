@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography, Button, Paper, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import StopIcon from '@mui/icons-material/Stop'
-import RestartAltIcon from '@mui/icons-material/RestartAlt'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import StopIcon from '@mui/icons-material/Stop';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -51,15 +51,15 @@ const Stopwatch: React.FC = () => {
     setIsRunning(false);
   };
 
-  const formatTime = useMemo(() => {
+  function formatTime(time: number) {
     const milliseconds: number = Math.floor(time % 1000);
     const seconds: number = Math.floor((time / 1000) % 60);
     const minutes: number = Math.floor((time / (1000 * 60)) % 60);
-    const formattedMilliseconds: string = milliseconds < 100 ? '0' + milliseconds : milliseconds.toString();
-    const formattedSeconds: string = seconds < 10 ? '0' + seconds : seconds.toString();
-    const formattedMinutes: string = minutes < 10 ? '0' + minutes : minutes.toString();
+    const formattedMilliseconds: string = String(milliseconds).padStart(3, '0');
+    const formattedSeconds: string = String(seconds).padStart(2, '0');
+    const formattedMinutes: string = String(minutes).padStart(2, '0');
     return `${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`;
-  }, [time]);
+  }
 
   return (
     <Container maxWidth="sm">
@@ -67,16 +67,14 @@ const Stopwatch: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           Stopwatch
         </Typography>
-        <TimeDisplay variant="h2">
-          {formatTime}
-        </TimeDisplay>
+        <TimeDisplay variant="h2">{formatTime(time)}</TimeDisplay>
         <ButtonGroup>
           <Button
             variant="contained"
-            color={isRunning ? "error" : "primary"}
+            color={isRunning ? 'error' : 'primary'}
             onClick={startStop}
             startIcon={isRunning ? <StopIcon /> : <PlayArrowIcon />}
-            aria-label={isRunning ? "Stop" : "Start"}
+            aria-label={isRunning ? 'Stop' : 'Start'}
           >
             {isRunning ? 'Stop' : 'Start'}
           </Button>
